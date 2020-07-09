@@ -1,35 +1,44 @@
-import express from "express";
-import * as bodyParser from "body-parser";
+import express, { Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
-import * as mongoose from "mongoose";
-import { NOT_FOUND, OK } from "http-status-codes";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { errorHandler } from "./middlewares";
+import Routes from "./routes";
+import { NOT_FOUND } from "http-status-codes";
 
 class App {
   public app: express.Application;
-
+  private Routes: Routes;
   constructor() {
     this.app = express();
+    dotenv.config();
+    this.Routes = new Routes();
     this.config();
+    this.configMongo();
   }
 
   private config() {
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cors());
     this.app.use(helmet());
-    //this.router.routes(this.app);
-    //this.app.use(errorHandler);
-    this.app.use("/", (req: express.Request, res: express.Response) => {
-      return res
-        .status(OK)
-        .json({ message: "Servidor correctamente iniciado" });
-    });
-
-    this.app.use("*", (req: express.Request, res: express.Response) => {
+    this.Routes.routes(this.app);
+    this.app.use(errorHandler);
+    this.app.use("*", (req: Request, res: Response) => {
       return res
         .status(NOT_FOUND)
         .json({ error: "No se ha encontrado el recurso solicitado" });
+    });
+  }
+
+  private configMongo() {
+    const DB_URL = `mongodb+srv://${process.env.DB_MONGO_USER}:${process.env.DB_MONGO_PWD}@qscluster.wtope.mongodb.net/${process.env.DB_MONGO}?retryWrites=true&w=majority`;
+    mongoose.connect(DB_URL, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
     });
   }
 }
