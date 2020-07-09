@@ -1,8 +1,8 @@
 import * as admin from "firebase-admin";
-const serviceAccount = require("../keys/quiz-simulator-api-key.json");
+import qsKey from "../keys";
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(qsKey),
   databaseURL: "https://quiz-simulator-api.firebaseio.com",
 });
 

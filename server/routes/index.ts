@@ -43,8 +43,8 @@ export const formFields = [
 ];
 
 const uploadQuestionImages = multer({
-  storage: storage,
-  fileFilter: fileFilter,
+  storage,
+  fileFilter,
   limits: { fileSize: 12288 },
 }).fields(formFields);
 

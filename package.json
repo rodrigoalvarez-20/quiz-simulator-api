@@ -2,10 +2,13 @@
   "name": "quiz-simulator-api",
   "version": "1.0.0",
   "description": "Un servicio backend escrito en ExpressJS y Typescript que brinda datos para un simulador de examen NMS y MS",
+  "main": "build/index.js",
   "scripts": {
-    "start-dev": "npx nodemon",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "start": "npm run build && node build/index.js"
+    "prestart": "npm run build && sudo mkdir build/resources",
+    "start": "node .",
+    "start-dev": "npx nodemon"
   },
   "repository": {
     "type": "git",
@@ -41,7 +44,8 @@
     "@types/mongoose": "^5.7.29",
     "@types/morgan": "^1.9.1",
     "@types/multer": "^1.4.3",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "tslint": "^6.1.2"
   },
   "nodemonConfig": {
     "watch": [

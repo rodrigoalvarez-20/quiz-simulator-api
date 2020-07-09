@@ -14,7 +14,7 @@ class App {
   constructor() {
     this.app = express();
     dotenv.config();
-    this.createResourcesFolder();
+    // this.createResourcesFolder();
     this.Routes = new Routes();
     this.config();
     this.configMongo();

@@ -17,20 +17,20 @@ class QuestionController {
   public addNewNMSQuestion(req: Request, res: Response, next: NextFunction) {
     const question = req.body as INMSQuestion;
     const files = req.files as any;
-    question.questionImgUrl = files["questionImage"]
-      ? (files["questionImage"][0].path as string)
+    question.questionImgUrl = files.questionImage
+      ? (files.questionImage[0].path as string)
       : "";
-    question.answerImgUrl = files["answerImage"]
-      ? (files["answerImage"][0].path as string)
+    question.answerImgUrl = files.answerImage
+      ? (files.answerImage[0].path as string)
       : "";
-    question.inc1ImgUrl = files["inc1Image"]
-      ? (files["inc1Image"][0].path as string)
+    question.inc1ImgUrl = files.inc1Image
+      ? (files.inc1Image[0].path as string)
       : "";
-    question.inc2ImgUrl = files["inc2Image"]
-      ? (files["inc2Image"][0].path as string)
+    question.inc2ImgUrl = files.inc2Image
+      ? (files.inc2Image[0].path as string)
       : "";
-    question.inc3ImgUrl = files["inc3Image"]
-      ? (files["inc3Image"][0].path as string)
+    question.inc3ImgUrl = files.inc3Image
+      ? (files.inc3Image[0].path as string)
       : "";
 
     question._id = new mongoose.Types.ObjectId();
@@ -49,7 +49,7 @@ class QuestionController {
       inc2ImgUrl: question.inc2ImgUrl,
       inc3: question.inc3,
       inc3ImgUrl: question.inc3ImgUrl,
-      subject: subjects[question.subject]["name"],
+      subject: subjects[question.subject].name,
     })
       .save()
       .then((response) => {
@@ -78,20 +78,20 @@ class QuestionController {
   public addNewNSQuestion(req: Request, res: Response, next: NextFunction) {
     const question = req.body as INSQuestion;
     const files = req.files as any;
-    question.questionImgUrl = files["questionImage"]
-      ? (files["questionImage"][0].path as string)
+    question.questionImgUrl = files.questionImage
+      ? (files.questionImage[0].path as string)
       : "";
-    question.answerImgUrl = files["answerImage"]
-      ? (files["answerImage"][0].path as string)
+    question.answerImgUrl = files.answerImage
+      ? (files.answerImage[0].path as string)
       : "";
-    question.inc1ImgUrl = files["inc1Image"]
-      ? (files["inc1Image"][0].path as string)
+    question.inc1ImgUrl = files.inc1Image
+      ? (files.inc1Image[0].path as string)
       : "";
-    question.inc2ImgUrl = files["inc2Image"]
-      ? (files["inc2Image"][0].path as string)
+    question.inc2ImgUrl = files.inc2Image
+      ? (files.inc2Image[0].path as string)
       : "";
-    question.inc3ImgUrl = files["inc3Image"]
-      ? (files["inc3Image"][0].path as string)
+    question.inc3ImgUrl = files.inc3Image
+      ? (files.inc3Image[0].path as string)
       : "";
 
     question._id = new mongoose.Types.ObjectId();
@@ -99,10 +99,10 @@ class QuestionController {
     const areaSubj = areaSubs as any;
     const baseSub = MSBaseSubjects as any;
 
-    var subj = "";
-    if (question.area) subj = areaSubj[question.area][question.subject]["name"];
+    let subj = "";
+    if (question.area) subj = areaSubj[question.area][question.subject].name;
     else {
-      subj = baseSub[question.subject]["name"];
+      subj = baseSub[question.subject].name;
       question.area = "";
     }
 
@@ -147,10 +147,10 @@ class QuestionController {
   }
 
   public getQuestionsNMS(req: Request, res: Response, next: NextFunction) {
-    var preguntas = new Array();
+    let preguntas = new Array();
     Object.keys(NMSSubjects).forEach((subject: any, idx, array) => {
-      const filter = { subject: { $in: subject["name"] } };
-      const limit = subject["quantity"] as number;
+      const filter = { subject: { $in: subject.name } };
+      const limit = subject.quantity as number;
       new Promise<INMSQuestion[]>((resolve, reject) => {
         NMSQuestion.findRandom(filter, {}, { limit }, (error, response) => {
           if (error) reject(error);
@@ -182,7 +182,7 @@ class QuestionController {
 
   public getQuestionNS(req: Request, res: Response, next: NextFunction) {
     const { university, area } = req.body;
-    
+
   }
 }
 
