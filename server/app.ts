@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { errorHandler } from "./middlewares";
 import Routes from "./routes";
 import { NOT_FOUND } from "http-status-codes";
+import fs from "fs";
 
 class App {
   public app: express.Application;
@@ -13,9 +14,14 @@ class App {
   constructor() {
     this.app = express();
     dotenv.config();
+    this.createResourcesFolder();
     this.Routes = new Routes();
     this.config();
     this.configMongo();
+  }
+
+  private createResourcesFolder() {
+    if (!fs.existsSync("/resources")) fs.mkdirSync("/resources");
   }
 
   private config() {
